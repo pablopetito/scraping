@@ -33,13 +33,12 @@ j=1
 
 element = driver.find_element_by_xpath("//*[@id='home-ubicacion']")
 element1 = element.send_keys("Capital Federal")
-element1.send_keys(Keys.ARROW_DOWN)
+time.sleep(3)
+element.send_keys(Keys.ARROW_DOWN)
+element.send_keys(Keys.ENTER)
 
-
-time.sleep(1)
-element = driver.find_element_by_xpath("/html/body/main/div[1]/div/div/div[2]/form[1]/div[3]/div[1]/ol/li[1]")
-time.sleep(2)
-buttonBuscar = driver.find_element_by_xpath("//*[@id='submit-buscar-por-ubicacion']").click()
+time.sleep(3)
+element = driver.find_element_by_xpath("//*[@id='suggestAlertPopup']/div/form/button[2]").click()
 
 time.sleep(5)
 
