@@ -54,12 +54,37 @@ time.sleep(5)
 # --- Borra todos los filtros de la busquedad
 element = driver.find_element_by_xpath("/html/body/main/div[1]/sidebar/div[2]/div/button").click()
 
+# --- Recolectar link PAISES 
+#//*[@id="argentina"]
+#//*[@id="locationFilter"]/ul[1]/li[1]
+#/html/body/main/div[1]/sidebar/div[4]/div/div[1]/div/div[2]/ul[1]/li[1]/a
+
+time.sleep(5)
+pais = driver.find_element_by_xpath('//*[@id="argentina"]').text
+paises = driver.find_element_by_xpath('//*[@id="locationFilter"]/ul[1]/li[1]/a').text
+paises2 = driver.find_element_by_xpath('//*[@id="locationFilter"]/ul[1]').text
+allPaises = driver.find_elements_by_xpath('//*[@id="locationFilter"]/ul[1]/li')
+todosPaises = []
+for paisesNom in allPaises:
+    todosPaises.append(paisesNom.text)
+
+time.sleep(5)
+element = driver.find_element_by_xpath("/html/body/main/div[1]/sidebar/div[4]/div/div[1]/div/div[2]/ul[1]/li[1]/a").click()
+print("pais")
+print(pais)
+print("paises")
+print(paises)
+print("paises2")
+print(paises2)
+print("paises de array")
+for nombre in todosPaises:
+    print("* " + nombre)
 
 #titulos=driver.find_element_by_xpath("/html/body/section[3]/section/article[2]/div/div/div[{}]/h2/a/span".format(i))
 #subtitulos=driver.find_element_by_xpath("/html/body/section[3]/section/article[2]/div/div/div[{}]/ul/li[{}]".format(i,j))
 
 # --- Cierra navegador 
-#driver.close()
+driver.close()
 
 #hora Final
 
