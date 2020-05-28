@@ -91,9 +91,8 @@ for paisesNom in allPaises:
     todosPaises.append(paisesNom.text)
 
 time.sleep(2)
-#element = driver.find_element_by_xpath("/html/body/main/div[1]/sidebar/div[4]/div/div[1]/div/div[2]/ul[1]/li[1]/a").click()
 
-
+#   **** Paises ****
 paises_nom = []
 paises_avisos = []
 
@@ -103,31 +102,82 @@ for nombre in todosPaises:
 
 for i in range(len(paises_nom)):
     print(paises_nom[i] + ": " + paises_avisos[i])
-
-
-#HACER CLICK EN UN PAIS *****
-pais = paises_nom[1].strip().lower()
-element = driver.find_element_by_xpath('//*[@id=\'{}\']'.format(pais)).click()
-#element = driver.find_element_by_xpath('//option[@value=\'{}\']'.format(State)).click()
-
-sys.exit()
-
-    #print("* " + pais + " avisos: " + cantidadAvisos )
+    pais = paises_nom[i].strip().lower()
     
-#print("pais 3: " + todosPaises[2])
+    # INGRESA A LOS  AVISOS DEL PAIS
+    element = driver.find_element_by_xpath('//*[@id=\'{}\']'.format(pais)).click()
+    
+    time.sleep(2)
 
-#pais = textoSolo(todosPaises[0])
-#cantidadAvisos = numeroSolo(pais[1])
+#   **** Localidades ****
+    allLocalidades = driver.find_elements_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/div/div[2]/ul[1]/li')
+    todosLocalidades = []
+    for localidadNom in allLocalidades:
+        todosLocalidades.append(localidadNom.text)
 
-#titulos=driver.find_element_by_xpath("/html/body/section[3]/section/article[2]/div/div/div[{}]/h2/a/span".format(i))
-#subtitulos=driver.find_element_by_xpath("/html/body/section[3]/section/article[2]/div/div/div[{}]/ul/li[{}]".format(i,j))
+        localidades_nom = []
+        localidades_avisos = []
+        
+        for nombre in todosLocalidades:
+            localidades_nom.append(textoSolo(nombre))   
+            localidades_avisos.append(numeroSolo(nombre))
+            j=1
+            for j in range(len(localidades_nom)):
+                print(localidades_nom[j] + ": " + localidades_avisos[j])
+                localidad = localidades_nom[j].strip().lower()
+                
+                # INGRESA A LOS  AVISOS DE LA LOCALIDAD
+                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/div/div[2]/ul[1]/li[{}]'.format(j+1)).click()
+                
+                time.sleep(2)              
+             
+                #BARRIO
+                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/span'.format(j+1)).click()
+                elem_barrio = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/label/span/a'.format(j+1)).text
+                barrio = textoSolo(elem_barrio).strip()
+                barrio_cant = numeroSolo(elem_barrio)
+                
+                time.sleep(2)
+                
+                #SUB-BARRIO
+                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[1]/label/span/a'.format(j+1)).click()
+                elem_subBarrio = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[1]/label/span/a'.format(j+1)).text
+                subBarrio = textoSolo(elem_subBarrio).strip()
+                subBarrio_cant = numeroSolo(elem_subBarrio)
+                
+                print(barrio + ": " + barrio_cant)
+                print(subBarrio + ": " + subBarrio_cant)
+
+                #Tipo de Operacion
+                elem_tipo_operacion = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul/li[1]/a').text
+                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul/li[1]/a').click()
+                tipo_operacion = textoSolo(elem_tipo_operacion).strip()
+                tipo_operacion_cant = numeroSolo(elem_tipo_operacion)
+                
+                print(tipo_operacion + ": " + tipo_operacion_cant)
+                
+                time.sleep(4)
+                
+                calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[2]/div[1]/h2').text
+                print(calle)
+                
+                detalle_Principal = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[2]/h3').text
+                print(detalle_Principal)
+                
+                sub_Detalle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[2]/p[1]').text
+                print(sub_Detalle)
+                
+                detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[2]/p[2]').text
+                print(detalle_detallado)
+                
+                
+                
+                sys.exit()
 
 # --- Cierra navegador 
 driver.close()
 
 #hora Final
-
 hrsFin=datetime.datetime.now()
 print("Hora Final de la Extraccion: ", hrsFin)
-
 print("Tiempo trasncurrido de la Extraccion: ", hrsFin - hrsInicial)
