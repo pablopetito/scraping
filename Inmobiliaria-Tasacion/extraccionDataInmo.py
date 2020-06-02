@@ -158,6 +158,19 @@ for i in range(len(paises_nom)):
                 
                 time.sleep(4)
                 
+                #BOTON MAS TIPO DE PROPIEDAD
+                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/button').click()
+                
+                time.sleep(2)
+                
+                #TIPO DE PROPIEDAD 
+                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[1]/a').click()
+               
+                time.sleep(2)
+                
+                #BOTON CANCELAR - ALERTA BUSQUEDAD          
+                element = driver.find_element_by_xpath('/html/body/main/div[4]/button[2]').click()
+                
                 calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[2]/div[1]/h2').text
                 print(calle)
                 
@@ -170,7 +183,11 @@ for i in range(len(paises_nom)):
                 detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[2]/p[2]').text
                 print(detalle_detallado)
                 
+                importe_moneda_Operacion = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[1]/div[2]/p[1]').text
+                print(importe_moneda_Operacion)
                 
+                expensas = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[1]/div[2]/p[2]').text
+                print(expensas)
                 
                 sys.exit()
 
