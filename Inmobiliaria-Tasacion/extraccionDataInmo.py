@@ -158,37 +158,100 @@ for i in range(len(paises_nom)):
                 
                 time.sleep(4)
                 
+                
+                for x in range(20):
+                    
+                    #BOTON MAS TIPO DE PROPIEDAD
+                    element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/button').click()
+                
+                    time.sleep(2)
+                
+                    #TIPO DE PROPIEDAD 
+                    tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').text
+                    element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[{}]/a'.format(x+1)).click()
+                
+                    print(tipo_propiedad)
+                                  
+                    time.sleep(3)
+                    
+                    
+                    #BOTON CANCELAR - ALERTA BUSQUEDAD
+                    try:
+                        element = driver.find_element_by_xpath('/html/body/main/div[4]/button[2]').click()
+                    except:
+                        element=""
+                        
+                    for y in range(4):    
+                        calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/div[1]/h2'.format(y+1)).text
+                        print(calle)
+                
+                        detalle_Principal = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/h3'.format(y+1)).text
+                        print(detalle_Principal)
+                
+                        sub_Detalle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[1]'.format(y+1)).text
+                        print(sub_Detalle)
+                
+                        detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[2]'.format(y+1)).text
+                        print(detalle_detallado)
+                
+                        importe_moneda_Operacion = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[1]'.format(y+1)).text
+                        print(importe_moneda_Operacion)
+                
+                
+                        try:
+                            expensas = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[2]'.format(y+1)).text
+                        except:
+                            expensas = ""
+                    
+                        print(expensas)
+                
+                    #Elimina Tipo de la Propiedad    
+                    element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[1]/h2/span').click()
+  
+    #-------------------------------------
+                sys.exit()
                 #BOTON MAS TIPO DE PROPIEDAD
                 element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/button').click()
                 
                 time.sleep(2)
                 
                 #TIPO DE PROPIEDAD 
-                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[1]/a').click()
-               
-                time.sleep(2)
+                tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').text
+                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').click()
                 
-                #BOTON CANCELAR - ALERTA BUSQUEDAD          
-                element = driver.find_element_by_xpath('/html/body/main/div[4]/button[2]').click()
+                print(tipo_propiedad)
                 
-                calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[2]/div[1]/h2').text
-                print(calle)
+                sys.exit()
                 
-                detalle_Principal = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[2]/h3').text
-                print(detalle_Principal)
+                time.sleep(3)
                 
-                sub_Detalle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[2]/p[1]').text
-                print(sub_Detalle)
                 
-                detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[2]/p[2]').text
-                print(detalle_detallado)
                 
-                importe_moneda_Operacion = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[1]/div[2]/p[1]').text
-                print(importe_moneda_Operacion)
+                #Elimina Sub-Barrio
+                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[3]/h2/span').click()
                 
-                expensas = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[1]/a/div[1]/div[2]/p[2]').text
-                print(expensas)
                 
+                
+                
+                               
+                
+                
+                #TIPO DE PROPIEDAD 
+                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').click()
+                tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').text
+                
+                print(tipo_propiedad)
+                
+                sys.exit()
+                
+                #otro.SUB-BARRIO
+                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[2]/label/span/a'.format(j+1)).click()
+                elem_subBarrio = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[2]/label/span/a'.format(j+1)).text
+                subBarrio = textoSolo(elem_subBarrio).strip()
+                subBarrio_cant = numeroSolo(elem_subBarrio)
+                
+                print(barrio + ": " + barrio_cant)
+                print(subBarrio + ": " + subBarrio_cant)
                 sys.exit()
 
 # --- Cierra navegador 
