@@ -158,19 +158,35 @@ for i in range(len(paises_nom)):
                 
                 time.sleep(4)
                 
+
+# SE EMPIEZA CON LOS TIPOS DE PROPIEDAD DE CADA SUB BARRIO
                 
-                for x in range(20):
+                for x in range(1, 20):
                     
                     #BOTON MAS TIPO DE PROPIEDAD
                     element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/button').click()
+                    
+                    #tipos_Prop = driver.find_element_by_tag_name('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li')
+            
+                    html_list = driver.find_element_by_id("tipopropiedad")
+                    items = html_list.find_elements_by_tag_name("li")
+                    for item in items:
+                        text = item.text
+                        print (text)
+
+      LISTADO DE TIPOS DE PROPIEDADES 
+              
+                    sys.exit()
                 
                     time.sleep(2)
                 
                     #TIPO DE PROPIEDAD 
-                    tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').text
-                    element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[{}]/a'.format(x+1)).click()
-                
-                    print(tipo_propiedad)
+                    
+                    elem_tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').text
+                    element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[{}]/a'.format(x)).click()
+                    tipo_propiedad = textoSolo(elem_tipo_propiedad).strip()
+                    tipo_propiedad_cant = numeroSolo(elem_tipo_propiedad)
+                    print(tipo_propiedad + ": " + tipo_propiedad_cant)
                                   
                     time.sleep(3)
                     
@@ -179,32 +195,88 @@ for i in range(len(paises_nom)):
                     try:
                         element = driver.find_element_by_xpath('/html/body/main/div[4]/button[2]').click()
                     except:
-                        element=""
+                        element="sin dato"
                         
-                    for y in range(4):    
-                        calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/div[1]/h2'.format(y+1)).text
+                    for y in range(1, 3):    
+                        
+                        try: 
+                            element = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]'.format(y))
+                        except:
+                            print("fin sub barrio")
+                            break
+                                                                
+                        calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/div[1]/h2'.format(y)).text
                         print(calle)
                 
-                        detalle_Principal = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/h3'.format(y+1)).text
+                        detalle_Principal = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/h3'.format(y)).text
                         print(detalle_Principal)
                 
-                        sub_Detalle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[1]'.format(y+1)).text
+                        sub_Detalle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[1]'.format(y)).text
                         print(sub_Detalle)
                 
-                        detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[2]'.format(y+1)).text
+                        detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[2]'.format(y)).text
                         print(detalle_detallado)
                 
-                        importe_moneda_Operacion = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[1]'.format(y+1)).text
+                        importe_moneda_Operacion = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[1]'.format(y)).text
                         print(importe_moneda_Operacion)
                 
                 
                         try:
-                            expensas = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[2]'.format(y+1)).text
+                            expensas = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[2]'.format(y)).text
                         except:
-                            expensas = ""
+                            expensas = "0"
                     
                         print(expensas)
                 
+                    for z in range(6,24):
+                        try: 
+                            element = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]'.format(z))
+                        except:
+                            print("fin sub barrio")
+                            break
+                                                               
+                        try:    
+                            calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/div[1]/h2'.format(z)).text        
+                        except:
+                            calle = "sin dato"
+                        print(calle)
+                
+                        try:
+                            detalle_Principal = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/h3'.format(z)).text
+                        except:
+                            detalle_Principal = "sin dato"
+                        print(detalle_Principal)
+                
+                        try:
+                            sub_Detalle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[1]'.format(z)).text
+                        except:
+                            sub_Detalle = "sin dato"
+                        print(sub_Detalle)
+                
+                        try:
+                            detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[2]'.format(z)).text
+                        except:
+                            detalle_detallado = "sin dato"
+                        print(detalle_detallado)
+                
+                        try:
+                            importe_moneda_Operacion = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[1]/span'.format(z)).text
+                        except:
+                            importe_moneda_Operacion ="Sin dato"
+                        print(importe_moneda_Operacion)
+                
+                
+                        try:
+                            expensas = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[2]'.format(z)).text                
+                        except:
+                            expensas = "0"
+                        print(expensas)
+                        
+                    
+                    element = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/ul/li[3]').click()
+                    
+                    sys.exit()
+                    
                     #Elimina Tipo de la Propiedad    
                     element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[1]/h2/span').click()
   
