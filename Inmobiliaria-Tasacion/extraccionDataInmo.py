@@ -88,7 +88,6 @@ time.sleep(4)
 
 # Borra todos los filtros de la busquedad
 element = driver.find_element_by_xpath("/html/body/main/div[2]/sidebar/div[1]/div/button").click()
-
 # Recolectar PAISES 
 time.sleep(4)
 allPaises = driver.find_elements_by_xpath('//*[@id="locationFilter"]/ul[1]/li')
@@ -110,297 +109,346 @@ for i in range(len(paises_nom)):
     pais = paises_nom[i].strip().lower()
     
     # hacer CLICK en el PAIS para ver todos los avisos 
-    element = driver.find_element_by_xpath('//*[@id=\'{}\']'.format(pais)).click()
-        
+    element = driver.find_element_by_xpath('//*[@id="locationFilter"]/ul[1]/li[{}]/label/span'.format(i+1)).click()   
+
     time.sleep(2)
 
     # Recolectar Localidades
-    allLocalidades = driver.find_elements_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/div/div[2]/ul[1]/li')
+    allLocalidades = driver.find_elements_by_xpath('/html/body/main/div[2]/sidebar/div[4]/form/div/div[1]/div/div[2]/ul[1]/li')
+    allLocalidades2 = driver.find_elements_by_xpath('/html/body/main/div[2]/sidebar/div[4]/form/div/div[1]/div/div[2]/ul[2]/li')                                               
+    
     todosLocalidades = []
     
     # INICIO BUSQUEDAD POR LOCALIDAD 
     for localidadNom in allLocalidades:
         todosLocalidades.append(localidadNom.text)
-
+        print(localidadNom.text)
+    
+    for localidadNom in allLocalidades2:
+        todosLocalidades.append(localidadNom.text)
+        print(localidadNom.text)
+        
+    print(len(allLocalidades))
+    print(len(allLocalidades2))
+    
     localidades_nom = []
-    localidades_avisos = []
-        
+    todosBarrios = []
+    
+    j=1
+    # EMPIEZA BUCLE PROVINCIAS
     for nombre in todosLocalidades:
-        localidades_nom.append(textoSolo(nombre))   
-        localidades_avisos.append(numeroSolo(nombre))
-            
-        j=1
-        for j in range(len(localidades_nom)):
-            print(localidades_nom[j] + ": " + localidades_avisos[j])
-            localidad = localidades_nom[j].strip().lower()
-                          
-            # INGRESA A LOS  AVISOS DE LA LOCALIDAD
-            element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/div/div[2]/ul[1]/li[{}]'.format(j+1)).click()
- 
-            time.sleep(2)              
-             
-            # Elegir BARRIO
-            element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/span'.format(j+1)).click()
-            elem_barrio = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/label/span/a'.format(j+1)).text
-            barrio = textoSolo(elem_barrio).strip()
-            barrio_cant = numeroSolo(elem_barrio)
-            
-            time.sleep(2)
-                
-            # Elegir SUB-BARRIO
-            element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[1]/label/span/a'.format(j+1)).click()
-            elem_subBarrio = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[1]/label/span/a'.format(j+1)).text
-            subBarrio = textoSolo(elem_subBarrio).strip()
-            subBarrio_cant = numeroSolo(elem_subBarrio)
-
-            # Elegir Operacion
-            elem_tipo_operacion = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul/li[1]/a').text
-            element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul/li[1]/a').click()
-            tipo_operacion = textoSolo(elem_tipo_operacion).strip()
-            tipo_operacion_cant = numeroSolo(elem_tipo_operacion)
-            
-            time.sleep(2)
-                
-
-            # SE EMPIEZA CON LOS TIPOS DE PROPIEDAD DE CADA SUB BARRIO
-                
-            for x in range(1, 20):
-                    
-                # BOTON MAS TIPO DE PROPIEDAD
-********************                
-ACA JODE VER ERROR EN BOTON MAS PROPIEADES
-********************
-                element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/button').click()
-                   
-                # Recolectar todos los tipos de propiedad                             
-                html_list = driver.find_element_by_id("tipopropiedad")
-                items = html_list.find_elements_by_tag_name("li")
-                   
-                # COMIENZA BUCLE TIPO DE PROPIEADES 
-                posI=1
-                for item in items:
-                    elem_tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[{}]/a'.format(posI)).text
-                    element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[{}]/a'.format(posI)).click()
-                    tipo_propiedad = textoSolo(elem_tipo_propiedad).strip()
-                    tipo_propiedad_cant = numeroSolo(elem_tipo_propiedad)
-                    
-                    # BOTON CANCELAR - ALERTA BUSQUEDAD
-                    try:
-                        element = driver.find_element_by_xpath('/html/body/main/div[4]/button[2]').click()
-                    except:
-                        element="sin dato"            
-              
-                    # Obtener datos del aviso
-                    for y in range(1, 3):    
-                                
-                        try: 
-                            element = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]'.format(y))
-                        except:
-                            print("fin sub barrio")
-                            element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[1]/h2/span').click()
-                            break
-                        
-                        # archivar fecha y hora extraccion del aviso
-                        fecha_extraccion=datetime.datetime.now()
-                        fecha_str = fecha_extraccion.strftime('%Y/%m/%d')
-                        avisos["fecha"].append(fecha_str)
-                        
-                        # archivar portal del aviso
-                        avisos["portal"].append("Argenprop")
-                        
-                        # archivar pais del aviso 
-                        avisos["pais"].append(pais)
-                        
-                        # archivar localidad del aviso 
-                        avisos["localidad"].append(localidad)
-                        
-                        # archivar barrio del aviso 
-                        avisos["barrio"].append(barrio)
-
-                        # archivar sub-Barrio del aviso 
-                        avisos["subBarrio"].append(subBarrio)
-
-                        # archivar Operacion del aviso 
-                        avisos["operacion"].append(tipo_operacion)
-                        
-                        # archivar pais del aviso 
-                        avisos["tipoProp"].append(tipo_propiedad)
-                                                                        
-                        calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/div[1]/h2'.format(y)).text
-                        # archivar calle del aviso 
-                        avisos["calle"].append(calle)
-                        
-                        detalle_Principal = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/h3'.format(y)).text
-                        # archivar Detalle Principal del aviso 
-                        avisos["detallePrincipal"].append(detalle_Principal)
-                        
-                        sub_Detalle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[1]'.format(y)).text
-                        # archivar Sub Detalle del aviso 
-                        avisos["subDetalle"].append(sub_Detalle)
-                        
-                        detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[2]'.format(y)).text
-                        # archivar Detalle Detallado del aviso 
-                        avisos["detalleDetallado"].append(detalle_detallado)
-                        
-                        importe_moneda_Operacion = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[1]'.format(y)).text
-                        # archivar Importe y Moneda de la Operacion  
-                        avisos["importeMonedaOpera"].append(importe_moneda_Operacion)
-                        
-                        patron_moneda = r"([$,USD,usd]+)"
-                        importe_aviso = numeroSolo(importe_moneda_Operacion)
-                        moneda_aviso = re.findall(patron_moneda, importe_moneda_Operacion)
-                        
-                        avisos["importeSolo"]=importe_aviso
-                        avisos["monedaOpera"]=moneda_aviso
-                    
-                        try:
-                            expensas = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[2]'.format(y)).text
-                        except:
-                            expensas = "0"
-                        # archivar expensas del aviso 
-                        avisos["expensas"].append(expensas)
-                 
-                    for z in range(6,24):
-                        try: 
-                            element = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]'.format(z))
-                        except:
-                            print("fin sub barrio")
-                            element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[1]/h2/span').click()
-                            break
-                        
-                        # archivar fecha y hora extraccion del aviso
-                        fecha_extraccion=datetime.datetime.now()
-                        fecha_str = fecha_extraccion.strftime('%Y/%m/%d')
-                        avisos["fecha"].append(fecha_str)
-                        
-                        # archivar portal del aviso
-                        avisos["portal"].append("Argenprop")
-                        
-                        # archivar pais del aviso 
-                        avisos["pais"].append(pais)
-                        
-                        # archivar localidad del aviso 
-                        avisos["localidad"].append(localidad)
-                        
-                        # archivar barrio del aviso 
-                        avisos["barrio"].append(barrio)
-
-                        # archivar sub-Barrio del aviso 
-                        avisos["subBarrio"].append(subBarrio)
-
-                        # archivar Operacion del aviso 
-                        avisos["operacion"].append(tipo_operacion)
-                        
-                        # archivar pais del aviso 
-                        avisos["tipoProp"].append(tipo_propiedad)
-                                                               
-                        try:    
-                            calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/div[1]/h2'.format(z)).text        
-                        except:
-                            calle = "sin dato"
-                        # archivar calle del aviso 
-                        avisos["calle"].append(calle)
-                
-                        try:
-                            detalle_Principal = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/h3'.format(z)).text
-                        except:
-                            detalle_Principal = "sin dato"
-                        # archivar Detalle Principal del aviso 
-                        avisos["detallePrincipal"].append(detalle_Principal)
-                
-                
-                        try:
-                            sub_Detalle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[1]'.format(z)).text
-                        except:
-                            sub_Detalle = "sin dato"
-                        # archivar Sub Detalle del aviso 
-                        avisos["subDetalle"].append(sub_Detalle)
-                
-                        try:
-                            detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[2]'.format(z)).text
-                        except:
-                            detalle_detallado = "sin dato"
-                        # archivar Detalle Detallado del aviso 
-                        avisos["detalleDetallado"].append(detalle_detallado)
-                
-                        try:
-                            importe_moneda_Operacion = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[1]/span'.format(z)).text
-                        except:
-                            importe_moneda_Operacion ="Sin dato"
-                        # archivar Importe y Moneda de la Operacion  
-                        avisos["importeMonedaOpera"].append(importe_moneda_Operacion)
-                
-                        patron_moneda = r"([$,USD,usd]+)"
-                        importe_aviso = numeroSolo(importe_moneda_Operacion)
-                        moneda_aviso = re.findall(patron_moneda, importe_moneda_Operacion)
-                        
-                        avisos["importeSolo"]=importe_aviso
-                        avisos["monedaOpera"]=moneda_aviso
-                
-                        try:
-                            expensas = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[2]'.format(z)).text                
-                        except:
-                            expensas = "0"
-                        # archivar expensas del aviso 
-                        avisos["expensas"].append(expensas)  
-                    
-                    try:
-                        element = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/ul/li[3]').click()
-                    except:
-                        break
-                    
-            print("--------------")
-            print(avisos)
-                       
-            # --- Cierra navegador 
-            driver.close()
-            # --- hora Final
-            hrsFin=datetime.datetime.now()
-            print("Hora Final de la Extraccion: ", hrsFin)
-            print("Tiempo trasncurrido de la Extraccion: ", hrsFin - hrsInicial)
-                        
-            sys.exit()             
+        localidades_nom.append(textoSolo(nombre))
+        print("Buscando en ", textoSolo(nombre))
+       
+        # INGRESA A LOS  AVISOS DE LA LOCALIDAD
+        element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/form/div/div[1]/div/div[2]/ul[1]/li[{}]'.format(j)).click()        
         
-        # VER ARMADO DE ARRAYS Y TERMINAR CON LA CANTIDAD DE CADA TIPO DE PROPIEDAD 
-         
-                    
-        #Elimina Tipo de la Propiedad    
-        element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[1]/h2/span').click()
-      #-------------------------------------
-        sys.exit()
-        #BOTON MAS TIPO DE PROPIEDAD
-        element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/button').click()
-               
-        time.sleep(2)
-                
-        #TIPO DE PROPIEDAD 
-        tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').text
-        element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').click()
-                
-        print(tipo_propiedad)
-                
-        sys.exit()
-                
-        time.sleep(3)
-               
-        #Elimina Sub-Barrio
-        element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[3]/h2/span').click()
-                              
-        #TIPO DE PROPIEDAD 
-        element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').click()
-        tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').text
-                
-        print(tipo_propiedad)
-                
-        sys.exit()
-                
-        #otro.SUB-BARRIO
-        element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[2]/label/span/a'.format(j+1)).click()
-        elem_subBarrio = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[2]/label/span/a'.format(j+1)).text
-        subBarrio = textoSolo(elem_subBarrio).strip()
-        subBarrio_cant = numeroSolo(elem_subBarrio)
-                
-        print(barrio + ": " + barrio_cant)
-        print(subBarrio + ": " + subBarrio_cant)
-        sys.exit()
+        # Recolectar Localidades
+        allBarrios = driver.find_elements_by_xpath('/html/body/main/div[2]/sidebar/div[4]/form/div/div[1]/div/div[2]/ul[1]/li')
+        allBarrios2 = driver.find_elements_by_xpath('/html/body/main/div[2]/sidebar/div[4]/form/div/div[1]/div/div[2]/ul[2]/li')
+        
+        for nomBarrio in allBarrios:
+            todosBarrios.append(nomBarrio.text)
+            
+        for nomBarrio in allBarrios2:
+            todosBarrios.append(nomBarrio.text)
+        
+        i = 1
+        for nomBarrio in todosBarrios:
+            print("Buscando en ", nomBarrio)
+            
+            # INGRESA A LOS  AVISOS DE LA LOCALIDAD
+            element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/form/div/div[1]/div/div[2]/ul[1]/li[{}]'.format(i)).click()        
+        
+            i = i + 1
+            sys.exit()
+        
+        j = j + 1
+    sys.exit()
 
+    
+        
+       
+
+# =============================================================================
+#     for j in range(len(localidades_nom)):
+#             print(localidades_nom[j])
+#             localidad = localidades_nom[j].strip().lower()
+#                           
+#  
+#  
+#             time.sleep(2)              
+#              
+#             # Elegir BARRIO
+#             element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/span'.format(j+1)).click()
+#             elem_barrio = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/label/span/a'.format(j+1)).text
+#             barrio = textoSolo(elem_barrio).strip()
+#             barrio_cant = numeroSolo(elem_barrio)
+#             
+#             time.sleep(2)
+#                 
+#             # Elegir SUB-BARRIO
+#             element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[1]/label/span/a'.format(j+1)).click()
+#             elem_subBarrio = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[1]/label/span/a'.format(j+1)).text
+#             subBarrio = textoSolo(elem_subBarrio).strip()
+#             subBarrio_cant = numeroSolo(elem_subBarrio)
+# 
+#             # Elegir Operacion
+#             elem_tipo_operacion = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul/li[1]/a').text
+#             element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul/li[1]/a').click()
+#             tipo_operacion = textoSolo(elem_tipo_operacion).strip()
+#             tipo_operacion_cant = numeroSolo(elem_tipo_operacion)
+#             
+#             time.sleep(2)
+#                 
+# 
+#             # SE EMPIEZA CON LOS TIPOS DE PROPIEDAD DE CADA SUB BARRIO
+#                 
+#             for x in range(1, 20):
+#                     
+#                 # BOTON MAS TIPO DE PROPIEDAD
+# #********************                
+# #ACA JODE VER ERROR EN BOTON MAS PROPIEADES
+# #********************
+#                 element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/button').click()
+#                 #element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[5]/div/button').click()
+#                 # Recolectar todos los tipos de propiedad                             
+#                 html_list = driver.find_element_by_id("tipopropiedad")
+#                 items = html_list.find_elements_by_tag_name("li")
+#                    
+#                 # COMIENZA BUCLE TIPO DE PROPIEADES 
+#                 posI=1
+#                 for item in items:
+#                     # BOTON MAS TIPO DE PROPIEDAD
+#                     try:
+#                         element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[5]/div/button').click()
+#                     except:
+#                         element=""
+#                         
+#                     elem_tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[{}]/a'.format(posI)).text
+#                     element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[{}]/a'.format(posI)).click()
+#                     tipo_propiedad = textoSolo(elem_tipo_propiedad).strip()
+#                     tipo_propiedad_cant = numeroSolo(elem_tipo_propiedad)
+#                     
+#                     # BOTON CANCELAR - ALERTA BUSQUEDAD
+#                     try:
+#                         element = driver.find_element_by_xpath('/html/body/main/div[4]/button[2]').click()
+#                     except:
+#                         element="sin dato"            
+#               
+#                     # Obtener datos del aviso
+#                     for y in range(1, 3):    
+#                                 
+#                         try: 
+#                             element = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]'.format(y))
+#                         except:
+#                             print("fin sub barrio")
+#                             element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[1]/h2/span').click()
+#                             break
+#                         
+#                         # archivar fecha y hora extraccion del aviso
+#                         fecha_extraccion=datetime.datetime.now()
+#                         fecha_str = fecha_extraccion.strftime('%Y/%m/%d')
+#                         avisos["fecha"].append(fecha_str)
+#                         
+#                         # archivar portal del aviso
+#                         avisos["portal"].append("Argenprop")
+#                         
+#                         # archivar pais del aviso 
+#                         avisos["pais"].append(pais)
+#                         
+#                         # archivar localidad del aviso 
+#                         avisos["localidad"].append(localidad)
+#                         
+#                         # archivar barrio del aviso 
+#                         avisos["barrio"].append(barrio)
+# 
+#                         # archivar sub-Barrio del aviso 
+#                         avisos["subBarrio"].append(subBarrio)
+# 
+#                         # archivar Operacion del aviso 
+#                         avisos["operacion"].append(tipo_operacion)
+#                         
+#                         # archivar pais del aviso 
+#                         avisos["tipoProp"].append(tipo_propiedad)
+#                                                                         
+#                         calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/div[1]/h2'.format(y)).text
+#                         # archivar calle del aviso 
+#                         avisos["calle"].append(calle)
+#                         
+#                         detalle_Principal = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/h3'.format(y)).text
+#                         # archivar Detalle Principal del aviso 
+#                         avisos["detallePrincipal"].append(detalle_Principal)
+#                         
+#                         sub_Detalle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[1]'.format(y)).text
+#                         # archivar Sub Detalle del aviso 
+#                         avisos["subDetalle"].append(sub_Detalle)
+#                         
+#                         detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[2]'.format(y)).text
+#                         # archivar Detalle Detallado del aviso 
+#                         avisos["detalleDetallado"].append(detalle_detallado)
+#                         
+#                         importe_moneda_Operacion = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[1]'.format(y)).text
+#                         # archivar Importe y Moneda de la Operacion  
+#                         avisos["importeMonedaOpera"].append(importe_moneda_Operacion)
+#                         
+#                         patron_moneda = r"([$,USD,usd]+)"
+#                         importe_aviso = numeroSolo(importe_moneda_Operacion)
+#                         moneda_aviso = re.findall(patron_moneda, importe_moneda_Operacion)
+#                         
+#                         avisos["importeSolo"]=importe_aviso
+#                         avisos["monedaOpera"]=moneda_aviso
+#                     
+#                         try:
+#                             expensas = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[2]'.format(y)).text
+#                         except:
+#                             expensas = "0"
+#                         # archivar expensas del aviso 
+#                         avisos["expensas"].append(expensas)
+#                  
+#                     for z in range(6,24):
+#                         try: 
+#                             element = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]'.format(z))
+#                         except:
+#                             print("fin sub barrio")
+#                             element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[1]/h2/span').click()
+#                             break
+#                         
+#                         # archivar fecha y hora extraccion del aviso
+#                         fecha_extraccion=datetime.datetime.now()
+#                         fecha_str = fecha_extraccion.strftime('%Y/%m/%d')
+#                         avisos["fecha"].append(fecha_str)
+#                         
+#                         # archivar portal del aviso
+#                         avisos["portal"].append("Argenprop")
+#                         
+#                         # archivar pais del aviso 
+#                         avisos["pais"].append(pais)
+#                         
+#                         # archivar localidad del aviso 
+#                         avisos["localidad"].append(localidad)
+#                         
+#                         # archivar barrio del aviso 
+#                         avisos["barrio"].append(barrio)
+# 
+#                         # archivar sub-Barrio del aviso 
+#                         avisos["subBarrio"].append(subBarrio)
+# 
+#                         # archivar Operacion del aviso 
+#                         avisos["operacion"].append(tipo_operacion)
+#                         
+#                         # archivar pais del aviso 
+#                         avisos["tipoProp"].append(tipo_propiedad)
+#                                                                
+#                         try:    
+#                             calle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/div[1]/h2'.format(z)).text        
+#                         except:
+#                             calle = "sin dato"
+#                         # archivar calle del aviso 
+#                         avisos["calle"].append(calle)
+#                 
+#                         try:
+#                             detalle_Principal = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/h3'.format(z)).text
+#                         except:
+#                             detalle_Principal = "sin dato"
+#                         # archivar Detalle Principal del aviso 
+#                         avisos["detallePrincipal"].append(detalle_Principal)
+#                 
+#                 
+#                         try:
+#                             sub_Detalle = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[1]'.format(z)).text
+#                         except:
+#                             sub_Detalle = "sin dato"
+#                         # archivar Sub Detalle del aviso 
+#                         avisos["subDetalle"].append(sub_Detalle)
+#                 
+#                         try:
+#                             detalle_detallado = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[2]/p[2]'.format(z)).text
+#                         except:
+#                             detalle_detallado = "sin dato"
+#                         # archivar Detalle Detallado del aviso 
+#                         avisos["detalleDetallado"].append(detalle_detallado)
+#                 
+#                         try:
+#                             importe_moneda_Operacion = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[1]/span'.format(z)).text
+#                         except:
+#                             importe_moneda_Operacion ="Sin dato"
+#                         # archivar Importe y Moneda de la Operacion  
+#                         avisos["importeMonedaOpera"].append(importe_moneda_Operacion)
+#                 
+#                         patron_moneda = r"([$,USD,usd]+)"
+#                         importe_aviso = numeroSolo(importe_moneda_Operacion)
+#                         moneda_aviso = re.findall(patron_moneda, importe_moneda_Operacion)
+#                         
+#                         avisos["importeSolo"]=importe_aviso
+#                         avisos["monedaOpera"]=moneda_aviso
+#                 
+#                         try:
+#                             expensas = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/div[1]/div[{}]/a/div[1]/div[2]/p[2]'.format(z)).text                
+#                         except:
+#                             expensas = "0"
+#                         # archivar expensas del aviso 
+#                         avisos["expensas"].append(expensas)  
+#                     
+#                     try:
+#                         element = driver.find_element_by_xpath('/html/body/main/div[2]/div/div[2]/ul/li[3]').click()
+#                     except:
+#                         break
+#                 print(avisos)
+#             print("--------------")
+#             print(avisos)
+#                        
+#             # --- Cierra navegador 
+#             driver.close()
+#             # --- hora Final
+#             hrsFin=datetime.datetime.now()
+#             print("Hora Final de la Extraccion: ", hrsFin)
+#             print("Tiempo trasncurrido de la Extraccion: ", hrsFin - hrsInicial)
+#                         
+#             sys.exit()             
+#         
+#         # VER ARMADO DE ARRAYS Y TERMINAR CON LA CANTIDAD DE CADA TIPO DE PROPIEDAD 
+#          
+#                     
+#         #Elimina Tipo de la Propiedad    
+#         element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[1]/h2/span').click()
+#       #-------------------------------------
+#         sys.exit()
+#         #BOTON MAS TIPO DE PROPIEDAD
+#         element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/button').click()
+#                
+#         time.sleep(2)
+#                 
+#         #TIPO DE PROPIEDAD 
+#         tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').text
+#         element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').click()
+#                 
+#         print(tipo_propiedad)
+#                 
+#         sys.exit()
+#                 
+#         time.sleep(3)
+#                
+#         #Elimina Sub-Barrio
+#         element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[1]/div/ul/li[3]/h2/span').click()
+#                               
+#         #TIPO DE PROPIEDAD 
+#         element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').click()
+#         tipo_propiedad = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[4]/div/ul[1]/li[2]/a').text
+#                 
+#         print(tipo_propiedad)
+#                 
+#         sys.exit()
+#                 
+#         #otro.SUB-BARRIO
+#         element = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[2]/label/span/a'.format(j+1)).click()
+#         elem_subBarrio = driver.find_element_by_xpath('/html/body/main/div[2]/sidebar/div[4]/div/div[1]/form/div/div[2]/ul[1]/li[{}]/ul/li[2]/label/span/a'.format(j+1)).text
+#         subBarrio = textoSolo(elem_subBarrio).strip()
+#         subBarrio_cant = numeroSolo(elem_subBarrio)
+#                 
+#         print(barrio + ": " + barrio_cant)
+#         print(subBarrio + ": " + subBarrio_cant)
+#         sys.exit()
+# 
+# 
+# =============================================================================
